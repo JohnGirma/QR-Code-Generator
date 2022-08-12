@@ -1,30 +1,46 @@
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import { Form ,Button} from 'react-bootstrap';
+import axios from "axios"
 import './App.css';
 
 
-function App() {
+const App=()=> {
    const [name,setName]=useState("hi")
-   const [size,setSize]=useState(0)
+   const [size,setSize]=useState("100x100")
+   const [images,setImages]=useState("")
 console.log(name)
-function nameChange(e){
+const nameChange=(e)=>{
     setName(e.target.value)
 }
-function sizeChange(e){
+const sizeChange=(e)=>{
   setSize(e.target.value)
 }
-function showTheQ(){
-  const chart=`https://chart.googleapis.com/chart?cht=qr&chs=${size}&chl=${name}`
-    chart
+const showTheQ=()=>{
+  getAllProduct()
 }
-  
+const getAllProduct=async()=>{
+      const result=await axios.get(`https://chart.googleapis.com/chart?cht=qr&chs=${size}&chl=${name}`).catch((error=>{
+          console.log(error)
+      }))
+      // console.log(result.data)
+      setImages(result.data)
+      
+      }
+  // useEffect(()=>{
+  //     getAllProduct()
+  // },[])
+  // console.log("from the store ",products)
+   
+
+  console.log(images)
   return (
     
     <div className="App">
-      <div>{name}</div>
-      <div>{size}</div>
+      {/* <div>{name}</div> */}
+      {/* <div>{size}</div> */}
+      <img src={images} alt="joo"  />
       
-
+    <img src="" alt=""  />
   <Form.Control value={name} onChange={nameChange} size="lg" type="text"  />
   <Form.Select size="lg" value={size} onChange={sizeChange}>
         <option>100x100</option>
